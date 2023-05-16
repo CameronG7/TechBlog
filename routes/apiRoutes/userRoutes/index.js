@@ -10,7 +10,7 @@ router.get('/',  async (req, res) => {
     });
 
     const users = userData.map((project) => project.get({ plain: true }));
-    res.json(userData)
+    res.json(users)
   } catch (error) {
     res.status(500).json({ error });
   }

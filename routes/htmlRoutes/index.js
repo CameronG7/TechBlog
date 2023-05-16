@@ -1,41 +1,53 @@
 const router = require('express').Router();
 const withAuth = require('../../utils/auth');
-const { User,Post } = require('../../models');
+const { User, Post } = require('../../models');
 
 // /home routes to the home page
-router.get('/',  async (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    const userData = await User.findAll({
-      attributes: { exclude: ['password'] },
-      order: [['username', 'ASC']]
+    const postData = await User.findAll({ //take all users and grab only their posts
+      attributes: { exclude: ['password', 'email'] },
+      order: [['id', 'ASC']],
+      include: [{ model: Post, order: [['id', 'ASC']] }]
     });
+    
+    const users = postData.map((project) => project.get({ plain: true }));
+    const posts = postData.flatMap((project) => //flatten the array of arrays of posts
+      project.get( 'posts',{ plain: true })
+    );
 
-    const users = userData.map((project) => project.get({ plain: true }));
-    res.redirect('/login');
+    console.log(posts);
+    console.log(users);
+
+    for (let i = 0; i < posts.length; i++) {
+      const post = posts[i];
+      const user = users.find((user) => user.id === post.userId);
+      post.username = user.username;
+    }
+   
+    res.render('home', {
+      posts,
+      users
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error });
   }
 });
 // /dashboard routes to the dashboard page
-router.get('/dashboard', async (req, res) => {
+router.get('/dashboard', withAuth, async (req, res) => {
   try {
     const userData = await User.findByPk(req.session.user.id, {
       attributes: { exclude: ['password'] },
       order: [['username', 'ASC']],
-      include: [{ model: Post, attributes: ['id', 'title', 'comment', ] }]
+      include: [{ model: Post, attributes: ['id', 'title', 'comment'] }]
     });
 
     const user = userData.get({ plain: true });
 
-    //if no user is signed in, redirect to the login page
-    if (!req.session.logged_in) {
-      res.redirect('/login');
-      return;
-    }
     console.log(user);
     res.render('dash', {
-      user,
+      user
     });
   } catch (error) {
     console.log(error);
@@ -64,5 +76,30 @@ router.get('/signup', async (req, res) => {
     res.status(500).json({ error });
   }
 });
+
+router.get('/newpost', async (req, res) => {
+  try {
+    console.log(req.session.user.id);
+    res.render('newPost', {});
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error });
+  }
+});
+
+router.get('/post/:id', async (req, res) => {
+  try {
+    const postData = await Post.findByPk(req.params.id, {
+    });
+    const post = postData.get({ plain: true });
+    console.log(post);
+    res.render('postComment',
+      {post})
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error });
+  }
+});
+
 
 module.exports = router;

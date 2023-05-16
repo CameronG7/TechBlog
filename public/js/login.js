@@ -21,7 +21,7 @@ $loginBtn.addEventListener('click', async (event) => {
     localStorage.setItem('response', response.ok)
     loginStatus = true;
     localStorage.setItem('loginStatus', true);
-    document.location.replace('/dashboard');
+    
    }else{
     alert('Failed to log in');
    }

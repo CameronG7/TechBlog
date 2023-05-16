@@ -12,10 +12,13 @@ Post.init(
       autoIncrement:true,
       
     },
-
-    comment: {
+    content: {
       type: DataTypes.TEXT,
       allowNull: false,
+    },
+    comment: {
+      type: DataTypes.TEXT,
+      allowNull: true,
     },
     title: {
       type: DataTypes.TEXT,
@@ -28,11 +31,12 @@ Post.init(
         key: 'id',
 
       }
-    }
+    },
+    
   },
     {
       sequelize,
-      timestamps: false,
+      timestamps: true,
       freezeTableName: true,
      
       modelName: 'post',

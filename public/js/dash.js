@@ -1,30 +1,20 @@
 const $title = document.getElementById('title');
 const $comment = document.getElementById('comment');
-const $submitBtn = document.getElementById('submitBtn');
+
 const $dashCard = document.getElementById('dashCard');
+const $newPost = document.getElementById('postBtn');
+
+
+// when you click the title of a card all other cards are hidden and the clicked card is expanded to show the comment section
 
 
 
-
-
-$submitBtn.addEventListener('click', async (event) => {
-  event.preventDefault();
-  const title = $title.value.trim();
-  const comment = $comment.value.trim();
-
-  if (!title || !comment) {
-    return alert('Please enter a title and comment');
-  }
+$newPost.addEventListener('click', async () => {
+  
   try {
-    const response = await fetch('/api/posts', {
-      method: 'POST',
-      body: JSON.stringify({ title, comment }),
-      headers: { 'Content-Type': 'application/json' },
-    });
-    const data = await response.json();
-    console.log(data);
     
-    document.location.reload();
+    
+    document.location.replace('newPost');
   } catch (err) {
     alert(err);
   }
