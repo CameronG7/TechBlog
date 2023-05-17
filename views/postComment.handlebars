@@ -1,59 +1,50 @@
-<div
-    class='card mt-5'
-    style=' width: 36rem;     
+<div class='card mt-5' style=' width: 36rem;     
     margin: 0 auto; /* Added */
     float: none; /* Added */
     margin-bottom: 10px; /* Added */
     background-color: #ffffff;
-    display: block ;'
-    id='postCard'
-  >
+    display: block ;' id='postCard'>
 
- <div id="commentCard" class='card-body' style="display: block;">
+  <div id="commentCard" class='card-body' style="display: block;">
+
+    <h2 data-id="{{post.id}}" id="postTitle" class='my-2 pb-1 border-bottom border-dark'>{{post.title}}</h2>
+
+    <p>{{post.content}}</p>
+
+    {{#if post.comments.length}}
+    <label for='comment'> Comments:</label>
+
+    <ul class='list-group'></ul>
+    {{#each post.comments as |comment|}}
+    <li class='list-group-item border-0'>
       
-          <h2 data-id="{{post.id}}"id="postTitle" class='my-2 pb-1 border-bottom border-dark'>{{post.title}}</h2>
-          
-          <p>{{post.content}}</p>
+  <p>{{comment.content}}</p>
+      <p>{{post.content}}</p>
 
-          <label for='comment'> Comment:</label>
-      <textarea
-      data-id="{{post.id}}"
-        id='comment'
-        class='form-control mt-2'
-        type='text'
-        name='comment'
-        placeholder='Walk the dog'
-        style='height: 200px;'
-      > </textarea>
-      <button id='commentBtn' class='btn btn-primary mt-2'>Add Comment</button>
-      <button id='backBtn' class='btn btn-primary mt-2'>Go Back</button>
+    </li>
     
-       
-    </div>
-    <div id="commentCard" class='card-body' style="display: none;">
-      
-          <h2 data-id="{{post.id}}"id="postTitle" class='my-2 pb-1 border-bottom border-dark'>{{post.title}}</h2>
-          
-          <p>{{post.content}}</p>
+    {{/each}}
+    {{else}}
+    <button id='commentBtn' class='btn btn-primary mt-2'>Add Comment</button>
+    <button id='backBtn' class='btn btn-primary mt-2'>Go Back</button>
 
-          <label for='comment'> Comment:</label>
-      <textarea
-      data-id="{{post.id}}"
-        id='comment'
-        class='form-control mt-2'
-        type='text'
-        name='comment'
-        placeholder='Walk the dog'
-        style='height: 200px;'
-      > </textarea>
-      <button id='commentBtn' class='btn btn-primary mt-2'>Add Comment</button>
-      <button id='backBtn' class='btn btn-primary mt-2'>Go Back</button>
-    
-       
-    </div>
-    
+
+  </div>
+  <div id="commentCard" class='card-body' style="display: none;">
+
+    <h2 data-id="{{post.id}}" id="postTitle" class='my-2 pb-1 border-bottom border-dark'>{{post.title}}</h2>
+
+    <p>{{post.content}}</p>
+
+    <label for='comment'> Comment:</label>
+    <textarea data-id="{{post.id}}" id='comment' class='form-control mt-2' type='text' name='comment'
+      placeholder='Walk the dog' style='height: 200px;'> </textarea>
+    <button id='commentSubmitBtn' class='btn btn-primary mt-2'>Add Comment</button>
+    <button id='backBtn' class='btn btn-primary mt-2'>Go Back</button>
+
+
   </div>
 
-  <script src="/js/postView.js"></script>
-  
-  
+</div>
+
+<script src="/js/postView.js"></script>
