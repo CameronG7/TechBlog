@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const withAuth = require('../../utils/auth');
-const { User, Post } = require('../../models');
+const { User, Post, Comment } = require('../../models');
 
 // /home routes to the home page
 router.get('/', async (req, res) => {
@@ -55,6 +55,28 @@ router.get('/dashboard', withAuth, async (req, res) => {
   }
 });
 
+router.get('/post/:id', async (req, res) => {
+  try {
+    const postData = await Post.findByPk(req.params.id, {
+     
+      include: [
+        { 
+        model: Comment, 
+        attributes: ['id', 'content', 'createdAt'],
+        include: [{ model: User, attributes: ['username'] }]
+        }] 
+                
+    });
+    const post = postData.get({ plain: true });
+    console.log(post);
+    res.render('postComment',
+      {post})
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error });
+  }
+});
+
 // /signin routes to the sign-in page
 router.get('/login', async (req, res) => {
   if (req.session.logged_in) {
@@ -87,19 +109,7 @@ router.get('/newpost', async (req, res) => {
   }
 });
 
-router.get('/post/:id', async (req, res) => {
-  try {
-    const postData = await Post.findByPk(req.params.id, {
-    });
-    const post = postData.get({ plain: true });
-    console.log(post);
-    res.render('postComment',
-      {post})
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error });
-  }
-});
+
 
 
 module.exports = router;

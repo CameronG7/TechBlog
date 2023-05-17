@@ -14,7 +14,9 @@ const hbs = exphbs.create({auth});
 
 const sessionConfig = {
   secret: 'Super secret secret',
-  cookie: {},
+  cookie: {
+    expires: 10 * 60 * 1000,
+  },
   resave: false,
   saveUninitialized: false,
   store: new SequelizeStore({
