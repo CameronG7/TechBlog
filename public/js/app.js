@@ -1,19 +1,24 @@
-const $navLogoutA = document.getElementById('navLogout');
-const $navLoginA = document.getElementById('navLogin');
+const $navLogout = document.getElementById('navLogout');
+const $navLogin = document.getElementById('navLogin');
 const $postTitle = document.querySelectorAll("[id='postTitle']");
+const $navHome = document.getElementById('navHome');
+const $navDash = document.getElementById('navDash');
+
 
 console.log($postTitle);
+console.log(window.location.pathname);
+console.log($navLogout.getAttribute('href'));
 
 
 
 let loginStatus = JSON.parse(localStorage.getItem('loginStatus'));
 
 if (loginStatus) { // really lazy way to check if user is logged in
-  $navLogoutA.style.display = 'block';
-  $navLoginA.style.display = 'none';
+  $navLogout.style.display = 'block';
+  $navLogin.style.display = 'none';
 } else {
-  $navLogoutA.style.display = 'none';
-  $navLoginA.style.display = 'block';
+  $navLogout.style.display = 'none';
+  $navLogin.style.display = 'block';
 }
 
 //when a post title is clicked, grab the post id and send it to the api route to get the post
@@ -27,7 +32,7 @@ $postTitle.forEach((post) => {
   });
 });
 
-$navLogoutA.addEventListener('click', async () => {
+$navLogout.addEventListener('click', async () => {
   try {
     const response = await fetch('/api/users/logout', {
       method: 'POST'
@@ -42,3 +47,22 @@ $navLogoutA.addEventListener('click', async () => {
     alert(err);
   }
 });
+
+ 
+   
+    function activeLoop(array) {
+      array.forEach((element) => {
+        // if the element has an href that matches the current url, add the active class else remove the active class
+        if (element.getAttribute('href') === window.location.pathname) {
+          element.classList.add('active');
+        } else {
+          element.classList.remove('active');
+        }
+      });
+    }
+
+      
+    activeLoop([$navHome, $navDash, $navLogin, $navLogout]);
+
+  
+

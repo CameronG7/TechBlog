@@ -28,3 +28,12 @@
 #homeBtn {
   text-decoration: none;
 }
+
+h2:hover {
+  color: #0dcaf0;
+  width:auto ;
+}
+
+/* .nav-item {
+  margin: 10px;
+} */
